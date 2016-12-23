@@ -1,0 +1,89 @@
+{% extends 'collection_app/base.html' %}
+{% load staticfiles %}
+{% block content %}
+<!DOCTYPE html>
+<html >
+  <head>
+    <meta charset="utf-8">
+    <title>Index</title>
+    <link rel="stylesheet" href="{% static 'lib/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/master.css' %}" >
+    <script src="{% static 'lib/angular/angular.js' %}"></script>
+  </head>
+  <body>
+    <div id="ftopo"  class="jumbotron" style="background-color:#34495e;">
+      <div class="container">
+
+        <div class="col-md-5" >
+          <div class="btn-group" role="group" >
+            <a href="http://localhost:8000/">Home</a>
+            <a href="#">Rock</a>
+            <a href="#">Pop</a>
+            <a href="#">Forró</a>
+            <a href="#">Swingueira</a>
+            <!--
+            <button type="button" class="btn btn-default">Rock</button>
+            <button type="button" class="btn btn-default">Pop</button>
+            <button type="button" class="btn btn-default">Forró</button>
+            <button type="button" class="btn btn-default">Swingueira</button>-->
+            <a href="logout"><button type="button" class="btn btn-danger btn-sm">Sair</button></a>
+          </div>
+        </div>
+
+        <div class="col-md-7 text-right">
+          <form class="form-contact" action="" method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                  <label for="">Link</label>
+                  {{form.url}}
+                  <label for="">Categoria</label>
+                  {{form.categoria}}
+                  <input type="submit" value="Enviar"  class="btn btn-primary btn-sm">
+            </fieldset>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+      <p>Olá {{usuario_logado.nome}}</p>
+      <!--
+        <h2>Incluir video</h2>
+          <form method="POST" class="">
+            <fieldset>
+              {% csrf_token %}
+              {{ form.as_p }}
+              <button type="submit" class="save btn btn-sm btn-primary">Salvar</button>
+            </fieldset>
+          </form> -->
+
+
+    <div  class="container">
+      {% for video in videos %}
+      <div  class="col-md-3 col-sm-6 col-xs-6 text-left">
+        <a href="http://localhost:8000/excluirVideo/?pk={{video.id}} ">
+        <button style="height:25px; width:60px;" type="button" class="btn btn-danger btn-sm" >Excluir</button></a>
+        <iframe  width="280" height="200"  src="{{video.url}}"  frameborder="0" allowfullscreen> </iframe>
+      </div>
+      {% endfor %}
+    </div>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
+{% endblock %}

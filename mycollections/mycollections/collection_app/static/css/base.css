@@ -1,0 +1,22 @@
+body{
+  background-image: url('/static/imagens/imagem_login2.jpg');
+  background-repeat: no-repeat;
+  background-size: 1370px;
+  padding: auto;
+  margin: auto;
+}
+#formulario{
+  font-weight: bolder;
+  color: black;
+}
+h2{
+  color: white;
+  font-style: verdana;
+  font-weight: bolder;
+}
+#collections{
+  font-size: 150px;
+  color:#95a5a6;
+  margin-top: 250px;
+  margin-left: 160px;
+}

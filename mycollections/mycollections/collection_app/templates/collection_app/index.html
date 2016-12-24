@@ -6,31 +6,54 @@
   <head>
     <meta charset="utf-8">
     <title>Index</title>
+    <link rel="mask-icon" type="image/png" href="{% static 'lib/imagens/icone.png'%}" sizes="32x32">
     <link rel="stylesheet" href="{% static 'lib/bootstrap/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/master.css' %}" >
     <script src="{% static 'lib/angular/angular.js' %}"></script>
-  </head>
-  <body>
-    <div id="ftopo"  class="jumbotron" style="background-color:#34495e;">
-      <div class="container">
+    <script src="{% static 'lib/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'lib/nprogress-master/nprogress.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/nprogress.css' %}" >
+    <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+    <link href="{% static 'lib/nprogress-master/support/style.css' %}" rel='stylesheet' />
 
-        <div class="col-md-5" >
+  <!--
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">-->
+
+
+
+
+  </head>
+  <body style='display: none'>
+
+    <div id="conteudo">
+
+
+    <div id="ftopo"  class="jumbotron footer navbar-fixed-top" >
+      <div class="container">
+        <div class="col-md-7" >
           <div class="btn-group" role="group" >
             <a href="http://localhost:8000/">Home</a>
-            <a href="#">Rock</a>
-            <a href="#">Pop</a>
-            <a href="#">Forró</a>
-            <a href="#">Swingueira</a>
+            <a href="http://localhost:8000/filtraVideo/?cat=Rock">Rock</a>
+            <a href="http://localhost:8000/filtraVideo/?cat=Pop">Pop</a>
+            <a href="http://localhost:8000/filtraVideo/?cat=Forró">Forró</a>
+            <a href="http://localhost:8000/filtraVideo/?cat=Swingueira">Swingueira</a>
+            <a href="http://localhost:8000/filtraVideo/?cat=Eletrohits">Eletrohits</a>
+            <a href="http://localhost:8000/filtraVideo/?cat=Romântica">Romântica</a>
+            <a href="http://localhost:8000/filtraVideo/?cat=Asmr">Asmr</a>
+            <a href="http://localhost:8000/filtraVideo/?cat=Palestras">Palestras</a>
             <!--
             <button type="button" class="btn btn-default">Rock</button>
             <button type="button" class="btn btn-default">Pop</button>
             <button type="button" class="btn btn-default">Forró</button>
             <button type="button" class="btn btn-default">Swingueira</button>-->
-            <a href="logout"><button type="button" class="btn btn-danger btn-sm">Sair</button></a>
+
           </div>
         </div>
 
-        <div class="col-md-7 text-right">
+
+        <div class="col-md-5 text-right">
           <form class="form-contact" action="" method="POST">
             {% csrf_token %}
             <fieldset class="form-group">
@@ -46,14 +69,6 @@
     </div>
 
 
-
-
-
-
-
-
-
-      <p>Olá {{usuario_logado.nome}}</p>
       <!--
         <h2>Incluir video</h2>
           <form method="POST" class="">
@@ -64,22 +79,40 @@
             </fieldset>
           </form> -->
 
+<div class="videos">
+  <h4 class="text-right">Olá {{usuario_logado.nome}} <a style="color:red" href="logout">Sair</a></h4>
 
     <div  class="container">
       {% for video in videos %}
       <div  class="col-md-3 col-sm-6 col-xs-6 text-left">
-        <a href="http://localhost:8000/excluirVideo/?pk={{video.id}} ">
-        <button style="height:25px; width:60px;" type="button" class="btn btn-danger btn-sm" >Excluir</button></a>
-        <iframe  width="280" height="200"  src="{{video.url}}"  frameborder="0" allowfullscreen> </iframe>
+        <iframe  class="iframe" width="280" height="200"  src="{{video.url}}"  frameborder="0" allowfullscreen> </iframe>
+        <a  href="http://localhost:8000/excluirVideo/?pk={{video.id}} ">
+          <button  id="btn-excluir" type="button" class="btn btn-danger btn-sm " >Excluir</button></a>
       </div>
       {% endfor %}
     </div>
+  </div>
 
 
+ </div>
 
+ <script>
 
-
-
+   $('body').show();
+   $("#conteudo").hide();//esconde o conteudo ate carregar tudo
+   $('.version').text(NProgress.version);
+   NProgress.start();
+   setTimeout(function() {
+     NProgress.done();
+     $("#conteudo").show();//mostra o conteudo da pagina ao terminar de carregar
+     $('.fade').removeClass('out');
+   }, 1000);
+//aqui é para chamar atraves de botoes
+   $("#b-0").click(function() { NProgress.start(); });
+   $("#b-40").click(function() { NProgress.set(0.4); });
+   $("#b-inc").click(function() { NProgress.inc(); });
+   $("#b-100").click(function() { NProgress.done(); });
+ </script>
 
 
 

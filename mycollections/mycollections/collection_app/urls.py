@@ -6,6 +6,8 @@ urlpatterns = [
     url(r'^index/$',views.index),
     url(r'^index/logout/$',views.logout),
     url(r'^excluirVideo/$',views.excluirVideo),
+    url(r'^filtraVideo/$',views.filtraVideo),
+    url(r'^filtraVideo/logout/$',views.logout),
 
 
 

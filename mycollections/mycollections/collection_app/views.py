@@ -75,3 +75,10 @@ def excluirVideo(request):
     pk =request.GET['pk']
     Video.objects.filter(id=pk).delete()
     return HttpResponseRedirect('http://localhost:8000')
+
+def filtraVideo(request):
+    cat = request.GET['cat']
+    videos = Video.objects.filter(categoria = cat )
+    usuario_logado = request.session.get('usuario_logado')
+    form = VideoForm()
+    return render(request,"collection_app/index.html",{'usuario_logado':usuario_logado,'videos':videos,'form':form})

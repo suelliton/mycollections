@@ -2,18 +2,26 @@
 body{
   background-color: #7FC1DC;
 }
-.tamanho {
-
-  width: 10px;
+.videos {
+margin-top: 80px;
 }
-#grade{
-  background-color: #9b59b6;
-
+#btn-excluir{
+    width: 260px;
+    height: 20px;
 }
+.iframe{
+  margin-bottom: -7px;
+  margin-top: 10px;
+}
+
 #ftopo{
-  background-color: #339BE6;
+  background-color: rgba(142, 68, 173,1.0);
   width: auto;
   height: 70px;
+  margin-top: -20px;
+  -webkit-opacity:0.9;
+   opacity: 0.9;
+ -moz-opacity:0.9;
 }
 a{
   font-size: 15px;

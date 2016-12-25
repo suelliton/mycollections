@@ -1,0 +1,39 @@
+{% extends 'collection_app/base.html' %}
+{% load staticfiles %}
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Cadastrar usuário</title>
+</head>
+<body>
+
+	<h3>Cadastrar usuário</h3>
+	<div class="col-md-6 col-md-offset-6">
+		<div class="formulario">
+			<div class="form-group">
+				<form method="POST" class="">
+					{% csrf_token %}
+					<label>Nome</label>
+					{{form.nome}}
+					<label>Senha</label>
+					{{form.senha}}
+					<label>Repita a senha</label>
+					{{form.rsenha}}
+					<h5>{{mensagem}}</h5>
+					<button type="submit" class="save btn btn-primary">Salvar</button>
+				</form>
+			</div>
+		</div>
+
+	</div>
+
+</body>
+</html>
+
+
+
+
+
+{% endblock %}

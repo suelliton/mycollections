@@ -1,6 +1,6 @@
 
 body{
-  background-color: #7FC1DC;
+  background-color: #FFE5FF;
 }
 .videos {
 margin-top: 80px;
@@ -8,6 +8,7 @@ margin-top: 80px;
 #btn-excluir{
     width: 260px;
     height: 20px;
+    border-radius: 0px;
 }
 .iframe{
   margin-bottom: -7px;

@@ -20,7 +20,7 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <link rel="stylesheet" href="/resources/demos/style.css">-->
-
+  
 
 
 
@@ -80,12 +80,12 @@
           </form> -->
 
 <div class="videos">
-  <h4 class="text-right">Olá {{usuario_logado.nome}} <a style="color:red" href="logout">Sair</a></h4>
+  <h4 class="text-right">Olá {{usuario_logado}} <a style="color:red" href="logout">Sair</a></h4>
 
     <div  class="container">
       {% for video in videos %}
       <div  class="col-md-3 col-sm-6 col-xs-6 text-left">
-        <iframe  class="iframe" width="280" height="200"  src="{{video.url}}"  frameborder="0" allowfullscreen> </iframe>
+        <iframe  class="iframe"   {{video.id}}" width="280" height="200"  src="{{video.url}}"  frameborder="0" allowfullscreen> </iframe>
         <a  href="http://localhost:8000/excluirVideo/?pk={{video.id}} ">
           <button  id="btn-excluir" type="button" class="btn btn-danger btn-sm " >Excluir</button></a>
       </div>

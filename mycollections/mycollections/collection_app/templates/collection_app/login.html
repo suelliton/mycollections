@@ -17,13 +17,21 @@
       <form method="POST" class="">
         {% csrf_token %}
         {{ form.as_p }}
+        <h5>{{mensagem}}</h5>
       <button type="submit" class="save btn btn-sm btn-success">Entrar</button>
       </form>
     </div>
   </div>
+  <div class="col-md-2 col-md-offset-2" style="color: white">
+   <h3>Não tem cadastro?</h3> 
+   <h4>Cadastre-se <a href="cadastra_usuario"> AQUI</a></h4> 
+   </div>
   <div class="col-md-8 col-md-offset-2">
     <h1 id="collections">Collections</h1>
   </div>
+
+
+
   </body>
 </html>
 {% endblock %}

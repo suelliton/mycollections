@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^excluirVideo/$',views.excluirVideo),
     url(r'^filtraVideo/$',views.filtraVideo),
     url(r'^filtraVideo/logout/$',views.logout),
+    url(r'^cadastra_usuario/$',views.cadastra_usuario),
 
 
 

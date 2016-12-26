@@ -21,8 +21,17 @@ def login(request):
                     return HttpResponseRedirect("index")  #chama o index
                 else:# se não achar não faz nada passa direto
                     pass
-            mensagem = "Usuário ou senha inválido"        
-            return render(request,"collection_app/login.html",{'mensagem':mensagem, 'form':form}) # se não achar o usuario limpa o formulario
+            
+            mensagem_geral,mensagem_senha,mensagem_nome = '','',''
+            if request.POST['nome'] =='' and request.POST['senha'] == '':
+                mensagem_geral = 'Preencha o campo nome e senha'
+            elif request.POST['senha'] == '':
+                mensagem_senha = 'Preencha o campo senha '
+            elif request.POST['nome'] == '':
+                mensagem_nome = 'Preencha o campo nome '
+            else:
+                mensagem_geral = "Usuário ou senha inválidos" 
+            return render(request,"collection_app/login.html",{'mensagem_geral':mensagem_geral,'mensagem_nome':mensagem_nome,'mensagem_senha':mensagem_senha, 'form':form}) # se não achar o usuario limpa o formulario
     else:   # se o metodo or GET
         if request.session.get('id_logado'):    #se tiver um usuario logado
             return HttpResponseRedirect("index")  #chama o index
@@ -41,24 +50,34 @@ def logout(request):
 
 def index(request):
     videos = []
+    mensagem = ''
     if request.session.get('id_logado'):#se tiver usuario logado
         id_logado = request.session.get('id_logado')
         usuario_logado = request.session.get('usuario_logado')
         if request.method == 'GET':
             videos = Video.objects.filter(id_usuario = id_logado)#pega todos videos do banco do usuario q esta logado
             form = VideoForm()
-            return render(request,"collection_app/index.html",{'usuario_logado':usuario_logado,'videos':videos,'form':form})
+            if len(videos) == 0:
+                mensagem = "Você ainda não cadastrou nenhum video "
+            return render(request,"collection_app/index.html",{'mensagem':mensagem,'usuario_logado':usuario_logado,'videos':videos,'form':form})
         else:
             form = VideoForm(request.POST)
             if form.is_valid():
-                 video = form.save(commit=False)
-                 link = "https://www.youtube.com/watch?v="+str(video.url)
+                 video = form.save(commit=False) #recebe oq veio no form
+                 i = video.url.find('=')           #guarda indice pra corte de chave
+                 j = video.url[i+1:len(video.url)].find('&') #percorre a procura do proximo parametro de url
+                 if j == '':                                # se não tiver outro parametro
+                    chave = video.url[i+1:len(video.url)]  # corta só a chave do link do i até o final da url
+                 else:
+                    chave = video.url[i+1:i+1+j]      #corta do i+1 até o j pegando só a chave e excluindo outros parametros
+                    
+                 link = "https://www.youtube.com/watch?v="+str(chave) # link para poder pegar o titulo
                  video.nome = getTitulo(link)
-                 embed = "https://www.youtube.com/embed/"+str(video.url)
-                 video.url = embed
-                 video.id_usuario = id_logado
-                 video.save()
-                 videos = Video.objects.filter(id_usuario = id_logado)
+                 embed = "https://www.youtube.com/embed/"+str(chave) # link para usar no html
+                 video.url = embed                          #guarda o embed na url no banco de dados
+                 video.id_usuario = id_logado               #relaciona o video ao usuário que está logado
+                 video.save()                               #salva        
+                 videos = Video.objects.filter(id_usuario = id_logado) # lista todos os videos do usuario logado 
                  form = VideoForm()
         return render(request,"collection_app/index.html",{'usuario_logado':usuario_logado,'videos':videos,'form':form})
 
@@ -80,12 +99,15 @@ def excluirVideo(request):
     return HttpResponseRedirect('http://localhost:8000')
 
 def filtraVideo(request):
+    mensagem =''
     cat = request.GET['cat']
     id_logado = request.session.get('id_logado')
     usuario_logado = request.session.get('usuario_logado')
     videos = Video.objects.filter(categoria = cat, id_usuario = id_logado)
     form = VideoForm()
-    return render(request,"collection_app/index.html",{'usuario_logado':usuario_logado,'videos':videos,'form':form})
+    if len(videos) == 0:
+        mensagem = "Você não tem videos nesta seção"
+    return render(request,"collection_app/index.html",{'mensagem':mensagem,'usuario_logado':usuario_logado,'videos':videos,'form':form})
 
 
 def cadastra_usuario(request):
@@ -100,12 +122,16 @@ def cadastra_usuario(request):
                 novo_usuario = Usuario()
                 novo_usuario.senha = usuario.senha
                 novo_usuario.nome = usuario.nome
-                novo_usuario.save()
-                form = UsuarioForm()
-                return HttpResponseRedirect('http://localhost:8000')           
+
+                usuarios = Usuario.objects.filter(nome = novo_usuario.nome)
+                if len(usuarios) > 0:
+                    mensagem = "Já existe um usuário com esse nome"
+                    return render(request,"collection_app/cadastra_usuario.html",{'form':form,'mensagem':mensagem})          
+                else:
+                    novo_usuario.save()                    
+                    return HttpResponseRedirect('http://localhost:8000')           
             else:
                 mensagem = "Senhas não coincidem"
-                form = UsuarioCadastroForm()
                 return render(request,"collection_app/cadastra_usuario.html",{'form':form,'mensagem':mensagem})           
 
 

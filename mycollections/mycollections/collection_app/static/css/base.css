@@ -4,11 +4,40 @@ body{
   background-size: 1370px;
   padding: auto;
   margin: auto;
+
 }
-#formulario{
-  font-weight: bolder;
-  color: black;
+#crie_conta{
+  margin-top: 60px;
 }
+#entrar{
+  width: 130px;
+  margin-left: 35px;
+}
+.fundo_form{
+  position: absolute;  
+  background-color: rgba(236, 240, 241,1.0);
+  padding: 150px;
+  margin-top:170px;
+
+  border-radius: 15px;
+  -webkit-opacity:0.8;
+  opacity: 0.8;
+ -moz-opacity:0.8;
+}
+.label{
+  font-size: 14px;
+  color: blue;
+  margin-bottom: px;
+}
+.form{
+
+  padding-bottom: 30px;
+  margin-top: 180px;
+  border-radius: 15px;
+  
+ 
+}
+
 h2{
   color: white;
   font-style: verdana;
@@ -17,6 +46,6 @@ h2{
 #collections{
   font-size: 150px;
   color:#95a5a6;
-  margin-top: 250px;
+  margin-top: 0px;
   margin-left: 160px;
 }

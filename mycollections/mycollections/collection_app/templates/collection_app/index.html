@@ -1,8 +1,9 @@
 {% extends 'collection_app/base.html' %}
 {% load staticfiles %}
 {% block content %}
+{% load widget_tweaks %}
 <!DOCTYPE html>
-<html >
+<html ng-app="videos">
   <head>
     <meta charset="utf-8">
     <title>Index</title>
@@ -20,12 +21,27 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <link rel="stylesheet" href="/resources/demos/style.css">-->
-  
+  <script >
+ 
+
+    angular.module("videos",[]);
+    angular.module("videos").controller("videosctrl",function ($scope) {
+      
+      $scope.vid = function () {
+
+        $scope.v = "smdsssssmmmdmdmdmdm";
+      }
+      
+
+
+    });
+
+  </script>
 
 
 
   </head>
-  <body style='display: none'>
+  <body style='display: none' ng-controller="videosctrl" onclick="vid">
 
     <div id="conteudo">
 
@@ -48,25 +64,41 @@
             <button type="button" class="btn btn-default">Pop</button>
             <button type="button" class="btn btn-default">Forró</button>
             <button type="button" class="btn btn-default">Swingueira</button>-->
-
           </div>
         </div>
 
+        <div class="col-md-5 text-left">
+           <h4 class="text-right">Olá {{usuario_logado}} <a style="color:red" href="logout">Sair</a></h4>
+        </div>
 
-        <div class="col-md-5 text-right">
-          <form class="form-contact" action="" method="POST">
+      </div>
+    </div>
+
+      <div class="col-md-3">
+        
+
+      </div>
+      <div class="col-md-9 text-left">
+          <form  action="" method="POST">
             {% csrf_token %}
-            <fieldset class="form-group">
-                  <label for="">Link</label>
-                  {{form.url}}
-                  <label for="">Categoria</label>
-                  {{form.categoria}}
-                  <input type="submit" value="Enviar"  class="btn btn-primary btn-sm">
+            <fieldset class=" form ">   
+                  <div class="col-md-1 ">
+                    <h5 class="text-right ">Link</h5>
+                  </div>               
+                 <div class="col-md-5 ">                     
+                   {{form.url| add_class:"form-control "}}
+                 </div> 
+                  <div class="col-md-1">
+                      <h5 class="text-right ">Categoria</h5>
+                  </div>   
+                 <div class="col-md-2">                    
+                    {{form.categoria | add_class:"form-control "}} 
+                 </div>
+                  <input type="submit" value="Enviar"  class="btn btn-primary btn-sm">            
             </fieldset>
           </form>
         </div>
-      </div>
-    </div>
+
 
 
       <!--
@@ -80,9 +112,10 @@
           </form> -->
 
 <div class="videos">
-  <h4 class="text-right">Olá {{usuario_logado}} <a style="color:red" href="logout">Sair</a></h4>
+ 
 
     <div  class="container">
+         <h1 > {{mensagem}} </h1>
       {% for video in videos %}
       <div  class="col-md-3 col-sm-6 col-xs-6 text-left">
         <iframe  class="iframe"   {{video.id}}" width="280" height="200"  src="{{video.url}}"  frameborder="0" allowfullscreen> </iframe>
@@ -95,6 +128,40 @@
 
 
  </div>
+
+
+
+
+
+<!--===========================angular-inicio=======================================-->
+
+<ul ng-repeat = "video in v" >
+  <li ng-bind="video"></li>
+
+</ul>
+<h5 ng-bind="v"></h5>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--===========================angular-fim=======================================-->
+
+
+
+
 
  <script>
 

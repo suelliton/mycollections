@@ -5,6 +5,12 @@ body{
 .videos {
 margin-top: 80px;
 }
+.form{
+
+}
+select.option{
+  color:  black;
+}
 #btn-excluir{
     width: 260px;
     height: 20px;

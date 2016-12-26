@@ -1,34 +1,37 @@
 {% extends 'collection_app/base.html' %}
 {% load staticfiles %}
 {% block content %}
+{% load widget_tweaks %}
 
 <!DOCTYPE html>
 <html>
 <head>
 	<title>Cadastrar usuário</title>
+	<link rel="stylesheet" href="{% static 'lib/bootstrap/css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/master.css' %}" >
 </head>
 <body>
-
+<div class="container">
 	<h3>Cadastrar usuário</h3>
-	<div class="col-md-6 col-md-offset-6">
-		<div class="formulario">
+	<div class="col-md-4 col-md-offset-4">
+		<div class="form_cadastro">
 			<div class="form-group">
 				<form method="POST" class="">
 					{% csrf_token %}
 					<label>Nome</label>
-					{{form.nome}}
+					{{form.nome| add_class:"form-control"}}
 					<label>Senha</label>
-					{{form.senha}}
+					{{form.senha| add_class:"form-control" }}
 					<label>Repita a senha</label>
-					{{form.rsenha}}
-					<h5>{{mensagem}}</h5>
-					<button type="submit" class="save btn btn-primary">Salvar</button>
+					{{form.rsenha | add_class:"form-control"}}
+					<h5 style="color: red">{{mensagem}}</h5>
+					<button type="submit" class=" btn btn-primary">Salvar</button>
 				</form>
 			</div>
 		</div>
 
 	</div>
-
+</div>
 </body>
 </html>
 

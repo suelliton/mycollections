@@ -17,4 +17,8 @@ class UsuarioCadastroForm(forms.ModelForm):
 	rsenha = forms.CharField(max_length = 20)
 	class Meta:
 		model = Usuario 
-		fields = ('nome','senha','rsenha')       
+		fields = ('nome','senha','rsenha')    
+
+class PesquisaForm(forms.ModelForm):
+    pesquisa = forms.CharField(max_length=40);
+    fields = ('pesquisa')

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django import forms
 from .models import Usuario, Video
-from .forms import UsuarioForm, VideoForm, UsuarioCadastroForm
+from .forms import UsuarioForm, VideoForm, UsuarioCadastroForm, PesquisaForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 import requests
@@ -64,21 +64,10 @@ def index(request):
             form = VideoForm(request.POST)
             if form.is_valid():
                  video = form.save(commit=False) #recebe oq veio no form
-                 i = video.url.find('=')           #guarda indice pra corte de chave
-                 j = video.url[i+1:len(video.url)].find('&') #percorre a procura do proximo parametro de url
-                 if j == '':                                # se não tiver outro parametro
-                    chave = video.url[i+1:len(video.url)]  # corta só a chave do link do i até o final da url
-                 else:
-                    chave = video.url[i+1:i+1+j]      #corta do i+1 até o j pegando só a chave e excluindo outros parametros
-                    
-                 link = "https://www.youtube.com/watch?v="+str(chave) # link para poder pegar o titulo
-                 video.nome = getTitulo(link)
-                 embed = "https://www.youtube.com/embed/"+str(chave) # link para usar no html
-                 video.url = embed                          #guarda o embed na url no banco de dados
-                 video.id_usuario = id_logado               #relaciona o video ao usuário que está logado
-                 video.save()                               #salva        
+                 incluirVideo(video,id_logado)                           #salva        
                  videos = Video.objects.filter(id_usuario = id_logado) # lista todos os videos do usuario logado 
                  form = VideoForm()
+                 
         return render(request,"collection_app/index.html",{'usuario_logado':usuario_logado,'videos':videos,'form':form})
 
 
@@ -93,22 +82,48 @@ def getTitulo(url):
     entradas = html.find_all('span',{'class':'watch-title'})
     return entradas[0].getText()
 
+def incluirVideo(video,id_logado):     
+    
+    i = video.url.find('=')           #guarda indice pra corte de chave
+    j = video.url[i+1:len(video.url)].find('&') #percorre a procura do proximo parametro de url
+    if j < 1 :                                # se não tiver outro parametro
+        chave = video.url[i+1:len(video.url)]  # corta só a chave do link do i até o final da url
+    else:
+        chave = video.url[i+1:i+1+j]      #corta do i+1 até o j pegando só a chave e excluindo outros parametros
+                     
+    link = "https://www.youtube.com/watch?v="+str(chave) # link para poder pegar o titulo
+    video.nome = getTitulo(link)
+    embed = "https://www.youtube.com/embed/"+str(chave) # link para usar no html
+    video.url = embed                          #guarda o embed na url no banco de dados
+    video.id_usuario = id_logado               #relaciona o video ao usuário que está logado
+    video.save()  
+
+
 def excluirVideo(request):
     pk =request.GET['pk']
-    Video.objects.filter(id=pk).delete()
+    Video.objects.filter(id=pk).delete()    
     return HttpResponseRedirect('http://localhost:8000')
 
 def filtraVideo(request):
-    mensagem =''
-    cat = request.GET['cat']
+    mensagem = ''
     id_logado = request.session.get('id_logado')
     usuario_logado = request.session.get('usuario_logado')
-    videos = Video.objects.filter(categoria = cat, id_usuario = id_logado)
-    form = VideoForm()
-    if len(videos) == 0:
-        mensagem = "Você não tem videos nesta seção"
-    return render(request,"collection_app/index.html",{'mensagem':mensagem,'usuario_logado':usuario_logado,'videos':videos,'form':form})
-
+    if request.method == 'GET':
+        cat = request.GET['cat']        
+        videos = Video.objects.filter(categoria = cat, id_usuario = id_logado)
+        form = VideoForm()
+        if len(videos) == 0:
+            mensagem = "Você não tem videos nesta seção"        
+    else:
+        form = VideoForm(request.POST)
+        if form.is_valid():
+            video = form.save(commit=False)
+            incluirVideo(video,id_logado)  
+            mensagem = 'Video incluido com sucesso!'
+            cat = request.GET['cat']        
+            videos = Video.objects.filter(categoria = cat, id_usuario = id_logado)
+            form = VideoForm()  
+    return render(request,"collection_app/index.html",{'mensagem':mensagem,'usuario_logado':usuario_logado,'videos':videos,'form':form})        
 
 def cadastra_usuario(request):
     if request.method == 'GET':

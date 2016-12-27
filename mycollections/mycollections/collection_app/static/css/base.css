@@ -1,24 +1,71 @@
-body{
-  background-image: url('/static/imagens/imagem_login2.jpg');
-  background-repeat: no-repeat;
-  background-size: 1370px;
-  padding: auto;
-  margin: auto;
 
+
+.homepage-hero-module {
+    border-right: none;
+    border-left: none;
+    position: relative;
 }
+.no-video .video-container video,
+.touch .video-container video {
+    display: none;
+}
+.no-video .video-container .poster,
+.touch .video-container .poster {
+    display: block !important;
+}
+.video-container {
+    position: relative;
+    bottom: 0%;
+    left: 0%;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background: #000;
+}
+.video-container .poster img {
+    width: 100%;
+    bottom: 0;
+    position: absolute;
+}
+.video-container .filter {
+    z-index: 100;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.4);
+    width: 100%;
+}
+.video-container video {
+    position: absolute;
+    z-index: 0;
+    bottom: 0;
+}
+.video-container video.fillWidth {
+    width: 100%;
+}
+
+/*-----------------------------------------*/
+
+#login{
+  margin-top: -750px;
+}
+#logo{
+ font-size: 100px;
+ margin-right: 100px;  
+ color: rgba(52, 73, 94,1.0);
+ 
+}
+
 #crie_conta{
   margin-top: 60px;
 }
 #entrar{
   width: 130px;
-  margin-left: 35px;
+  margin-left: 40px;
 }
 .fundo_form{
   position: absolute;  
   background-color: rgba(236, 240, 241,1.0);
   padding: 150px;
   margin-top:170px;
-
   border-radius: 15px;
   -webkit-opacity:0.8;
   opacity: 0.8;
@@ -27,15 +74,13 @@ body{
 .label{
   font-size: 14px;
   color: blue;
-  margin-bottom: px;
+ 
 }
 .form{
-
+  position: relative;
   padding-bottom: 30px;
   margin-top: 180px;
-  border-radius: 15px;
-  
- 
+  border-radius: 15px; 
 }
 
 h2{

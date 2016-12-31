@@ -2,22 +2,31 @@ from django.db import models
 from django import forms
 
 class Usuario(models.Model):
-    nome = models.CharField(blank=True, null=True,max_length=30)  # This field type is a guess.
+    nome = models.CharField(blank=False, null=False,max_length=30,default="")  # This field type is a guess.
     id = models.IntegerField(primary_key=True, blank=True, null=False)  # AutoField?
-    senha = models.CharField(blank=True, null=True,max_length=30)  # This field type is a guess.
-
+    senha = models.CharField(blank=False, null=False,max_length=30,default="")  # This field type is a guess.
+    email = models.EmailField(max_length=254,null=False,blank=True)
+    
     class Meta:
         managed = True
         db_table = 'Usuario'
-    def _str_(self):
-        return self.id
-    def _unicode_(self):
-        return self.id
+    
+
+class Usuario_temp(models.Model):
+    nome = models.CharField(blank=False, null=False,max_length=30,default="")  # This field type is a guess.
+    id = models.IntegerField(primary_key=True, blank=True, null=False)  # AutoField?
+    senha = models.CharField(blank=False, null=False,max_length=30,default="")  # This field type is a guess.
+    email = models.EmailField(max_length=254,null=False,blank=True)
+    class Meta:
+        managed = True
+        db_table = 'Usuario_temp'
+   
+
 
 
 class Video(models.Model):
     id = models.IntegerField(primary_key=True, blank=True, null=False)  # AutoField?
-    id_usuario = models.IntegerField(null = False)
+    id_usuario = models.IntegerField(null = False, default=0)
     nome = models.CharField(max_length=50,default='')
     url = models.CharField(blank=True, null=True,max_length=1000)  # This field type is a guess.
 
@@ -26,46 +35,26 @@ class Video(models.Model):
     Pop = 'Pop'
     Swingueira = 'Swingueira'
     Eletrohits = 'Eletrohits'
-    Asmr = 'Asmr'
+    Sertanejo = 'Sertanejo'
     Palestras = 'Palestras'
     Romântica ='Romântica'
+    Outros = 'Outros'
     CHOICES = (
             (Forro, 'Forró'),
             (Rock, 'Rock'),
             (Pop, 'Pop'),
             (Swingueira, 'Swingueira'),
+            (Sertanejo,'Sertanejo'),
             (Eletrohits,'Eletrohits'),
-            (Romântica,'Romântica'),
-            (Asmr,'Asmr'),
+            (Romântica,'Romântica'),            
             (Palestras,'Palestras'),
+            (Outros,'Outros'),
         )
     categoria = models.CharField(max_length=30,choices=CHOICES,default=Rock)
 
     class Meta:
         managed = True
-        db_table = 'video'
-"""class Categoria(models.Model):
-    Forro = 'fr'
-    Rock =  'rc'
-    Pop = 'pp'
-    Swingueira = 'sw'
-    CHOICES = (
-            (Forro, 'Forró'),
-            (Rock, 'Rock'),
-            (Pop, 'Pop'),
-            (Swingueira, 'Swingueira'),
-        )
+        db_table = 'Video'
+      
 
 
-
-    nome = models.CharField(max_length=30,choices=CHOICES,default=Rock,)
-    id = models.IntegerField(primary_key = True,null=False)
-    class Meta:
-        managed =True
-        db_table = 'categoria'
-    def _str_(self):
-        return self.nome
-
-    def is_upperclass(self):
-        return self.nome in (self.Rock, self.Forro,self.Pop,self.Swingueira)
-"""

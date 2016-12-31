@@ -4,7 +4,7 @@ from .models import Usuario, Video
 class UsuarioForm(forms.ModelForm):
     class Meta:
         model = Usuario
-        fields = ('nome', 'senha',)
+        fields = ('nome', 'senha','email',)
        
 
 class VideoForm(forms.ModelForm):
@@ -17,7 +17,7 @@ class UsuarioCadastroForm(forms.ModelForm):
 	rsenha = forms.CharField(max_length = 20)
 	class Meta:
 		model = Usuario 
-		fields = ('nome','senha','rsenha')    
+		fields = ('nome','email','senha','rsenha')    
 
 class PesquisaForm(forms.ModelForm):
     pesquisa = forms.CharField(max_length=40);

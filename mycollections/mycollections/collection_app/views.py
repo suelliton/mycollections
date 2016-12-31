@@ -1,6 +1,7 @@
+import smtplib
 from django.shortcuts import render
 from django import forms
-from .models import Usuario, Video
+from .models import Usuario, Video, Usuario_temp
 from .forms import UsuarioForm, VideoForm, UsuarioCadastroForm, PesquisaForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
@@ -58,7 +59,7 @@ def index(request):
             videos = Video.objects.filter(id_usuario = id_logado)#pega todos videos do banco do usuario q esta logado
             form = VideoForm()
             if len(videos) == 0:
-                mensagem = "Você ainda não cadastrou nenhum video "
+                mensagem = "Você ainda não cadastrou nenhum video "                
             return render(request,"collection_app/index.html",{'mensagem':mensagem,'usuario_logado':usuario_logado,'videos':videos,'form':form})
         else:
             form = VideoForm(request.POST)
@@ -134,21 +135,66 @@ def cadastra_usuario(request):
         if form.is_valid():
             usuario = form.save(commit = False)
             if usuario.senha == request.POST['rsenha']:
-                novo_usuario = Usuario()
+                novo_usuario = Usuario_temp()
                 novo_usuario.senha = usuario.senha
                 novo_usuario.nome = usuario.nome
+                novo_usuario.email = usuario.email
 
-                usuarios = Usuario.objects.filter(nome = novo_usuario.nome)
-                if len(usuarios) > 0:
-                    mensagem = "Já existe um usuário com esse nome"
+                usuarios_nomes = Usuario.objects.filter(nome = novo_usuario.nome) 
+                usuarios_emails = Usuario.objects.filter(email=novo_usuario.email)
+                if novo_usuario.email == '':
+                    mensagem = "Preencha o campo email "
+                    return render(request,"collection_app/cadastra_usuario.html",{'form':form,'mensagem':mensagem})       
+                if len(usuarios_nomes) > 0:
+                    mensagem = "Já existe um usuário cadastrado com  esse nome "
                     return render(request,"collection_app/cadastra_usuario.html",{'form':form,'mensagem':mensagem})          
+                elif len(usuarios_emails) > 0:
+                    mensagem = "Já existe um usuário cadastrado com esse email "
+                    return render(request,"collection_app/cadastra_usuario.html",{'form':form,'mensagem':mensagem})          
+
                 else:
-                    novo_usuario.save()                    
-                    return HttpResponseRedirect('http://localhost:8000')           
+                    novo_usuario.save()
+                    enviaEmail(novo_usuario)                    
+                    mensagem = 'Um email foi enviado para sua caixa de entrada entre e click no link para ativar a conta '
+                    return render(request,"collection_app/confirma_cadastro.html",{'mensagem':mensagem})           
             else:
                 mensagem = "Senhas não coincidem"
                 return render(request,"collection_app/cadastra_usuario.html",{'form':form,'mensagem':mensagem})           
 
 
+def enviaEmail(usuario):
+    email_alvo = str(usuario.email)
+    url_alvo = 'http://localhost:8000/autentica_cadastro/?email='+str(usuario.email)
+    smtp = smtplib.SMTP_SSL('smtp.gmail.com', 465) 
+    smtp.login('tonmelodicmetal@gmail.com', 'suelliton') 
+    de = 'tonmelodicmetall@gmail.com' 
+    para = [email_alvo]
+    msg = """From: %s 
 
+
+To: %s 
+
+
+Subject: Mycollections
+Clique no link para ativar sua conta. 
+Link: %s    """ % (de, ', '.join(para),url_alvo) 
+    smtp.sendmail(de, para, msg)
+    smtp.quit()
+
+
+def autentica_cadastro(request):
+    if request.method == 'GET':
+        email = request.GET['email']
+        usuario_temporario = Usuario_temp.objects.filter(email = email) 
+        usuario_definitivo = Usuario()        
+        usuario_definitivo.nome = usuario_temporario[0].nome
+        usuario_definitivo.senha = usuario_temporario[0].senha
+        usuario_definitivo.email = usuario_temporario[0].email
+        usuario_definitivo.save()
+        mensagem = "Usuario confirmado com sucesso!, faça login atravez de http://localhost:8000/"
+        return render(request,"collection_app/confirma_cadastro.html",{'mensagem':mensagem})    
+
+def confirma_cadastro(request):
+    
+    return render(request,"collection_app/confirma_cadastro.html",{'mensagem':mensagem})
 

@@ -11,35 +11,35 @@
     <link rel="stylesheet" href="{% static 'lib/bootstrap/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/master.css' %}" >
     <script src="{% static 'lib/angular/angular.js' %}"></script>
+    
     <script src="{% static 'lib/jquery/jquery.min.js' %}"></script>
     <script src="{% static 'lib/nprogress-master/nprogress.js' %}"></script>
     <link rel="stylesheet" href="{% static 'css/nprogress.css' %}" >
     <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
     <link href="{% static 'lib/nprogress-master/support/style.css' %}" rel='stylesheet' />
 
-  
-
-
+ 
 
   </head>
   <body style='display: none' ng-controller="videosctrl" >
     <div id="conteudo">
       <div id="ftopo"  class="jumbotron footer navbar-fixed-top" >
         <div class="container">
-          <div class="col-md-7" >
+          <div class="col-md-8" >
             <div class="btn-group" role="group" >
               <a href="http://localhost:8000/">Home</a>
               <a href="http://localhost:8000/filtraVideo/?cat=Rock">Rock</a>
               <a href="http://localhost:8000/filtraVideo/?cat=Pop">Pop</a>
               <a href="http://localhost:8000/filtraVideo/?cat=Forró">Forró</a>
               <a href="http://localhost:8000/filtraVideo/?cat=Swingueira">Swingueira</a>
+              <a href="http://localhost:8000/filtraVideo/?cat=Sertanejo">Sertanejo</a>
               <a href="http://localhost:8000/filtraVideo/?cat=Eletrohits">Eletrohits</a>
-              <a href="http://localhost:8000/filtraVideo/?cat=Romântica">Romântica</a>
-              <a href="http://localhost:8000/filtraVideo/?cat=Asmr">Asmr</a>
+              <a href="http://localhost:8000/filtraVideo/?cat=Romântica">Romântica</a>              
               <a href="http://localhost:8000/filtraVideo/?cat=Palestras">Palestras</a>
+              <a href="http://localhost:8000/filtraVideo/?cat=Outros">Outros</a>
             </div>
           </div>
-          <div class="col-md-5 text-left">
+          <div class="col-md-4 text-left">
              <h4 class="text-right">Olá {{usuario_logado}} <a style="color:red" href="logout">Sair</a></h4>
           </div>
         </div>
@@ -48,12 +48,15 @@
       <div class="col-md-3">
         <form method="POST"> {% csrf_token %}
           {{formPesquisa.as_p}}
-         <button type="button" class="btn btn-primary" >Pesquisar</button>
+         <button type="button" id="pesquisa" class="btn btn-primary" >Pesquisar</button>
         </form>
           
       </div>
-      <div class="col-md-9 text-left">
-          <form  action="" method="POST">
+
+      <div  class="col-md-9 text-left">
+        
+
+          <form  action="" method="POST" id="enviar">
             {% csrf_token %}
             <fieldset class=" form ">   
                   <div class="col-md-1 ">
@@ -71,13 +74,14 @@
                   <input type="submit" value="Enviar"  class="btn btn-primary btn-sm">            
             </fieldset>
           </form>
+           <button type="button" class="col-md-offset-9 btn btn-primary" id="btn_enviar">Novo link</button>
        </div>
       
 
       <div class="videos">
         <div  class="container">
             <h1 > {{mensagem}} </h1>
-              {% for video in videos %}
+              {%  for video in videos  %}
             <div  class="col-md-3 col-sm-6 col-xs-6 text-left">
                 <iframe  class="iframe"   {{video.id}}" width="280" height="200"  src="{{video.url}}"  frameborder="0" allowfullscreen> </iframe>
                 <a  href="http://localhost:8000/excluirVideo/?pk={{video.id}} ">
@@ -87,51 +91,13 @@
         </div>
       </div>
 
-
  </div>
 
 
 
 
 
-<!--===========================angular-inicio=======================================-->
-
-
-
-
-
-
-
-
-
-
-
-
-<!--===========================angular-fim=======================================-->
-
-
-
-
-
- <script>
-
-   $('body').show();
-   $("#conteudo").hide();//esconde o conteudo ate carregar tudo
-   $('.version').text(NProgress.version);
-   NProgress.start();
-   setTimeout(function() {
-     NProgress.done();
-     $("#conteudo").show();//mostra o conteudo da pagina ao terminar de carregar
-     $('.fade').removeClass('out');
-   }, 1000);
-//aqui é para chamar atraves de botoes
-   $("#b-0").click(function() { NProgress.start(); });
-   $("#b-40").click(function() { NProgress.set(0.4); });
-   $("#b-inc").click(function() { NProgress.inc(); });
-   $("#b-100").click(function() { NProgress.done(); });
- </script>
-
-
+<script src="{% static 'lib/js/index.js' %}"></script>
 
 
   </body>

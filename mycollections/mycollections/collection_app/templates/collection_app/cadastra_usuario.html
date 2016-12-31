@@ -20,6 +20,8 @@
 					{% csrf_token %}
 					<label>Nome</label>
 					{{form.nome| add_class:"form-control"}}
+					<label>Email</label>
+					{{form.email | add_class:"form-control"}}
 					<label>Senha</label>
 					{{form.senha| add_class:"form-control" }}
 					<label>Repita a senha</label>

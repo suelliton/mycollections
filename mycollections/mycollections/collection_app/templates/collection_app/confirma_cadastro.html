@@ -1,0 +1,31 @@
+{% extends 'collection_app/base.html' %}
+{% load staticfiles %}
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+	<title>Confirmação</title>
+	 <link rel="stylesheet" href="{% static 'lib/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}" >
+    <script src="{% static 'lib/jquery/jquery.min.js' %}"></script>
+     <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+</head>
+<body>
+
+<div class="col-md-6 col-md-offset-2">
+	<h4>{{mensagem}}</h4>
+</div>
+<a href="http://localhost:8000"><button class="btn btn-primary">Inicio</button></a>
+
+
+
+
+</body>
+</html>
+
+
+
+
+{% endblock %}

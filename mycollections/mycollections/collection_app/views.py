@@ -191,7 +191,7 @@ def autentica_cadastro(request):
         usuario_definitivo.senha = usuario_temporario[0].senha
         usuario_definitivo.email = usuario_temporario[0].email
         usuario_definitivo.save()
-        mensagem = "Usuario confirmado com sucesso!, faça login atravez de http://localhost:8000/"
+        mensagem = "Usuario confirmado com sucesso!"
         return render(request,"collection_app/confirma_cadastro.html",{'mensagem':mensagem})    
 
 def confirma_cadastro(request):

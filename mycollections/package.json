@@ -1,0 +1,8 @@
+{
+  "private": false,
+  "name": "mycollections",
+  "version": "1.0",
+  "engines": {
+    "python": "3.5.1"
+  }
+}
